@@ -13,7 +13,7 @@ Using OpenCV to capture video from camera or video file, then use YOLOv8 TensorR
 | --- | --- | --- |
 | OpenCV + YOLOv8n + DeepSORT | NVIDIA dGPU GTX 1660Ti 6Gb| ~ |
 | OpenCV + YOLOv8n + DeepSORT | NVIDIA Jetson Xavier NX 8Gb | ~ |
-| OpenCV + YOLOv8n + DeepSORT | NVIDIA Jetson Orin Nano 8Gb | ~44 |
+| OpenCV + YOLOv8n + DeepSORT | NVIDIA Jetson Orin Nano 8Gb | ~34 |
 
 ### YOLOv8 TensorRT model
 

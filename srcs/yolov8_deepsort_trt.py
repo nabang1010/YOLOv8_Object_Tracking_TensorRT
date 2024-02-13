@@ -14,7 +14,6 @@ from models.utils import blob, letterbox, path_to_list
 from datetime import datetime, timedelta
 import json
 
-output_file = "tracking_output.txt"
 
 
 class ROI:
@@ -32,25 +31,6 @@ DEBOUNCE_PERIOD = timedelta(seconds=2)
 person_tracker = {}
 debounce_tracker = {}
 
-
-def write_data_to_file(data, filename):
-    try:
-        with open(filename, "a") as file:
-            file.write(json.dumps(data) + "\n")
-    except Exception as e:
-        print("Error writing data to file:", e)
-        
-def draw_roi(frame):
-    for key, value in DICT_ROIS.items():
-        cv2.rectangle(frame, (value.x1, value.y1), (value.x2, value.y2), (0, 0, 255), 1)
-        cv2.putText(frame, key, (value.x1, value.y1 + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)   
-    return frame
-
-def determine_region(cx, cy):
-    for key, value in DICT_ROIS.items():
-        if cx >= value.x1 and cx <= value.x2 and cy >= value.y1 and cy <= value.y2:
-            return key
-    return None
 
 
 

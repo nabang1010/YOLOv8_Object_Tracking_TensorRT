@@ -171,3 +171,5 @@ cython_debug/
 opencv_build
 *.mp4
 *.avi
+tracking_bytetrack_output.txt
+run_bt.py
