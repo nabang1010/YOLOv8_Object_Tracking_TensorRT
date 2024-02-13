@@ -1,0 +1,15 @@
+[submodule "refs/YOLOv8-TensorRT"]
+	path = refs/YOLOv8-TensorRT
+	url = https://github.com/triple-Mu/YOLOv8-TensorRT
+[submodule "refs/deepsort_tensorrt"]
+	path = refs/deepsort_tensorrt
+	url = https://github.com/GesilaA/deepsort_tensorrt
+[submodule "refs/opencv"]
+	path = refs/opencv
+	url = https://github.com/opencv/opencv.git
+[submodule "refs/opencv_contrib"]
+	path = refs/opencv_contrib
+	url = https://github.com/opencv/opencv_contrib.git
+[submodule "refs/ByteTrack"]
+	path = refs/ByteTrack
+	url = https://github.com/ifzhang/ByteTrack.git
