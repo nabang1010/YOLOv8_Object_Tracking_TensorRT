@@ -13,6 +13,7 @@ from models.torch_utils import det_postprocess
 from models.utils import blob, letterbox, path_to_list
 from datetime import datetime, timedelta
 import json
+import random
 
 
 
@@ -32,6 +33,12 @@ person_tracker = {}
 debounce_tracker = {}
 
 
+color_dict = {}
+
+def get_random_color(id):
+    if id not in color_dict:
+        color_dict[id] = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    return color_dict[id]
 
 
 def main(args):
@@ -51,7 +58,7 @@ def main(args):
     
     video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    # out = cv2.VideoWriter('output.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (cv2.CAP_PROP_FRAME_WIDTH,cv2.CAP_PROP_FRAME_HEIGHT))
+    out = cv2.VideoWriter('output_ds.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (video_width,video_height))
     while(True):
         ret, frame = cap.read()
         
@@ -83,7 +90,7 @@ def main(args):
         bboxes /= ratio
         detections = []
         for (bbox, score, label) in zip(bboxes, scores, labels):
-            if label == 0 and score.item() > 0.5:
+            if label == 0 and score.item() > 0.3:
                 bbox = bbox.round().int().tolist()
                 cls_id = int(label)
                 cls = CLASSES[cls_id]
@@ -105,12 +112,14 @@ def main(args):
         print(fps_str)
          
         cv2.putText(frame, fps_str, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(frame, "YOLOV8-DEEP SORT", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
         if args.show:
             cv2.imshow("output", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break        
-        # out.write(frame)
-
+        out.write(frame)
+        
+    out.release()
     cap.release()
     cv2.destroyAllWindows()
     # tracker_trt.clear()

@@ -1,8 +1,21 @@
-# YOLOv8 DeepSORT TensorRT
+<div align="center">
 
-Using OpenCV to capture video from camera or video file, then use YOLOv8 TensorRT to detect objects and DeepSORT TensorRT or BYTETrack to track objects. 
+# YOLOv8 Object Tracking TensorRT
 
-Support for both NVIDIA dGPU and Jetson devices.
+</div>
+
+
+Using OpenCV to capture video from camera or video file, then use **YOLOv8 TensorRT** to detect objects and **DeepSORT TensorRT** or **BYTETrack** to track objects. 
+
+Support for both **NVIDIA dGPU** and **Jetson** devices.
+
+## Demo
+
+### OpenCV + YOLOv8 + BYTETrack on NVIDA Geforce GTX 1660Ti
+![](assets/sample_yolov8_bytetrack.gif)
+
+
+
 
 ## Performance
 

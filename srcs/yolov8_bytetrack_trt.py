@@ -13,6 +13,7 @@ from models.utils import blob, letterbox, path_to_list
 from datetime import datetime, timedelta
 import json
 import numpy as np
+import random
 
 
 
@@ -31,11 +32,18 @@ DEBOUNCE_PERIOD = timedelta(seconds=2)
 person_tracker = {}
 debounce_tracker = {}
 
+color_dict = {}
+
+def get_random_color(id):
+    if id not in color_dict:
+        color_dict[id] = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    return color_dict[id]
+
 
 
 def main(args):
     args_bytetrack = argparse.Namespace()
-    args_bytetrack.track_thresh = 0.6
+    args_bytetrack.track_thresh = 0.2
     args_bytetrack.track_buffer = 200
     args_bytetrack.mot20 = True
     args_bytetrack.match_thresh = 0.7
@@ -61,7 +69,7 @@ def main(args):
         
         if frame is None:
             print('No image input!')
-            break
+            continue
         
         start = float(time())
         fps_str = "FPS:"
@@ -87,7 +95,7 @@ def main(args):
         bboxes /= ratio
         output = []
         for (bbox, score, label) in zip(bboxes, scores, labels):
-            if label == 0 and score.item() > 0.5:
+            if label == 0 and score.item() > 0.2:
                 bbox = bbox.round().int().tolist()
                 cls_id = int(label)
                 cls = CLASSES[cls_id]
@@ -98,7 +106,7 @@ def main(args):
         info_imgs = frame.shape[:2]
         img_size = info_imgs
         
-        if output is not None:
+        if output != []:
             online_targets = tracker.update(output, info_imgs, img_size)
             online_tlwhs = []
             online_ids = []
@@ -111,7 +119,7 @@ def main(args):
                 online_scores.append(t.score)
                 
                 if args.show:
-                    cv2.rectangle(frame, (int(tlwh[0]), int(tlwh[1])), (int(tlwh[0] + tlwh[2]), int(tlwh[1] + tlwh[3])), (0, 255, 0), 2)
+                    cv2.rectangle(frame, (int(tlwh[0]), int(tlwh[1])), (int(tlwh[0] + tlwh[2]), int(tlwh[1] + tlwh[3])), get_random_color(tid), 2)
                     cv2.putText(frame, str(tid), (int(tlwh[0]), int(tlwh[1])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
         end = float(time())
@@ -122,8 +130,8 @@ def main(args):
     
         fps = 1/(end - start)
         print(fps_str)
-         
-        cv2.putText(frame, fps_str, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(frame, "YOLOV8-BYTETrack", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(frame, fps_str, (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
         if args.show:
             cv2.imshow("output", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -138,7 +146,7 @@ def main(args):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--engine', type=str, help='Engine file', default='../models/engine/yolov8n.engine')
-    parser.add_argument('--vid', type=str, help='Video file', default='../sample_video/sample.mp4')
+    parser.add_argument('--vid', type=str, help='Video file', default='../sample_video/sample_2.mp4')
     parser.add_argument('--show',
                         action='store_true',
                         help='Show the results')
