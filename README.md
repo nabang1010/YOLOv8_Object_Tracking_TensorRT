@@ -189,7 +189,7 @@ cd src
 python3 yolov8_deepsort_trt.py --show
 
 ```
-**Run YOLOv8 + DeepSORT**
+**Run YOLOv8 + BYTETrack**
 
 ```bash
 python3 yolov8_bytetrack_trt.py --show
